@@ -62,14 +62,12 @@ export default {
     filterPlayers() {
       let filtered = this.originalPlayers;
 
-      // Filter by team
       if (this.selectedTeam !== "ALL") {
         filtered = filtered.filter(
           (player) => player.team_name === this.selectedTeam
         );
       }
 
-      // Filter by search query
       const query = this.searchQuery.toLowerCase();
       if (query) {
         filtered = filtered.filter(
