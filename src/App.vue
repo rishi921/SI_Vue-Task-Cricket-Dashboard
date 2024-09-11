@@ -1,11 +1,15 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg bg-light custom-navbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Sportz Interactive</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <select v-model="selectedTeam" @change="filterPlayers">
+            <select
+              v-model="selectedTeam"
+              @change="filterPlayers"
+              class="form-select team-select"
+            >
               <option value="ALL">ALL</option>
               <option value="IND">IND</option>
               <option value="PAK">PAK</option>
@@ -13,27 +17,20 @@
               <option value="ENG">ENG</option>
             </select>
           </ul>
-          <form class="d-flex" role="search">
+          <form class="d-flex search-form">
             <input
               class="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="Search Players"
               v-model="searchQuery"
               @input="filterPlayers"
             />
-            <button
-              class="btn btn-outline-success"
-              type="button"
-              @click="searchPlayers"
-            >
-              Search
-            </button>
           </form>
         </div>
       </div>
     </nav>
 
-    <div class="container text-center">
+    <div class="container text-center mt-4">
       <PlayerList :players="filteredPlayers" role="2" title="Batsmen" />
       <PlayerList :players="filteredPlayers" role="4" title="Bowlers" />
       <PlayerList :players="filteredPlayers" role="3" title="All-rounders" />
@@ -59,13 +56,13 @@ export default {
     };
   },
   mounted() {
-    this.filterPlayers(); // Ensure that it applies default filters on mount
+    this.filterPlayers();
   },
   methods: {
     filterPlayers() {
       let filtered = this.originalPlayers;
 
-      // Filter by selected team
+      // Filter by team
       if (this.selectedTeam !== "ALL") {
         filtered = filtered.filter(
           (player) => player.team_name === this.selectedTeam
@@ -84,10 +81,39 @@ export default {
 
       this.filteredPlayers = filtered;
     },
-    searchPlayers() {
-      // This method is no longer needed if filterPlayers handles the search
-      this.filterPlayers();
-    },
   },
 };
 </script>
+
+<style scoped>
+.custom-navbar {
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #0275d8;
+  font-size: 1.5rem;
+}
+
+.team-select {
+  margin-right: 20px;
+  font-weight: 500;
+}
+
+.search-form input {
+  border: 2px solid #0275d8;
+  border-radius: 20px;
+  padding: 8px 15px;
+}
+
+.search-form input::placeholder {
+  font-style: italic;
+  color: #666;
+}
+
+.search-form input:focus {
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+</style>
